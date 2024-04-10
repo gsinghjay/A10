@@ -1,0 +1,44 @@
+<!DOCTYPE html> <!-- Specifies the document type and HTML version, here it is HTML5 -->
+<html>
+<head>
+<script>
+// Defines a function to set a cookie with name, value, and expiry days
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date(); // Creates a new date object for the current date and time
+  d.setTime(d.getTime() + (exdays*24*60*60*1000)); // Sets the expiry date by adding 'exdays' to the current date
+  let expires = "expires=" + d.toUTCString(); // Formats the expiry date as a string for the cookie
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/"; // Sets the cookie with name, value, and expiry date
+}
+
+// Defines a function to retrieve a cookie's value by its name
+function getCookie(cname) {
+  let name = cname + "="; // Prepares the key for matching
+  let decodedCookie = decodeURIComponent(document.cookie); // Decodes the cookie string to handle encoded characters
+  let ca = decodedCookie.split(';'); // Splits the cookie string into individual cookies
+  for(let i = 0; i < ca.length; i++) { // Loops through all cookies
+    let c = ca[i].trim(); // Trims whitespace from the current cookie string
+    if (c.indexOf(name) == 0) { // Checks if the current cookie string begins with the name
+      return c.substring(name.length, c.length); // Returns the value of the cookie
+    }
+  }
+  return ""; // Returns an empty string if the cookie is not found
+}
+
+// Defines a function to check for a specific cookie, and act based on its presence or absence
+function checkCookie() {
+  let user = getCookie("username"); // Tries to retrieve the 'username' cookie
+  if (user != "") { // Checks if the cookie was found
+    alert("Welcome back " + user); // Welcomes back the user if the cookie exists
+  } else {
+    user = prompt("Enter a user name:",""); // Asks for the user's name if the cookie does not exist
+    if (user != "" && user != null) { // Checks if the user entered a name
+      setCookie("username", user, 30); // Sets a 'username' cookie with the entered name for 30 days
+    }
+  }
+}
+</script>
+</head>
+
+<body onload="checkCookie()"></body> <!-- Calls 'checkCookie()' function when the page loads -->
+
+</html>
